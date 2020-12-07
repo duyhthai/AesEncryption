@@ -7,16 +7,17 @@ namespace AesEncryption
 	{
 		static void Main(string[] args)
 		{
-			EncryptFile("ThePasswordToDecryptAndEncryptTheFile");
+			EncryptFile("ThePasswordToDecryptAndEncryptTheFile", @"test.png");
+			//DecryptFile("ThePasswordToDecryptAndEncryptTheFile", @"test.png.aes");
 		}
 
-		private static void EncryptFile(string password)
+		private static void EncryptFile(string password, string filePath)
 		{
 			// For additional security Pin the password of your files
 			GCHandle gch = GCHandle.Alloc(password, GCHandleType.Pinned);
 
 			// Encrypt the file
-			FileEncryption.FileEncrypt(@"test.png", password);
+			FileEncryption.FileEncrypt(filePath, password);
 
 			// To increase the security of the encryption, delete the given password from the memory !
 			FileEncryption.ZeroMemory(gch.AddrOfPinnedObject(), password.Length * 2);
@@ -26,15 +27,13 @@ namespace AesEncryption
 			Console.WriteLine("The given password is surely nothing: " + password);
 		}
 
-		private static void DecryptFile()
+		private static void DecryptFile(string password, string filePath)
 		{
-			string password = "ThePasswordToDecryptAndEncryptTheFile";
-
 			// For additional security Pin the password of your files
 			GCHandle gch = GCHandle.Alloc(password, GCHandleType.Pinned);
 
 			// Decrypt the file
-			FileEncryption.FileDecrypt(@"test.png.aes", @"test_decrypted.png", password);
+			FileEncryption.FileDecrypt(filePath, @"test_decrypted.png", password);
 
 			// To increase the security of the decryption, delete the used password from the memory !
 			FileEncryption.ZeroMemory(gch.AddrOfPinnedObject(), password.Length * 2);
